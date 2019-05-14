@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buzzer Server</title>
+    <script type="text/javascript">
+        ;(function() {
+          function isNumber(x) {
+            return typeof x === 'number' && x === x
+          }
+
+          function ready(fn) {
+            if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+              fn();
+            } else {
+              document.addEventListener('DOMContentLoaded', fn);
+            }
+          }
+
+          window.updateData = function (data) {
+            ready(function () {
+              if (isNumber(data.rcCode)) {
+                document.getElementById('rc-code-field').value = data.rcCode
+                document.getElementById('rc-box').innerText = 'V'
+              } else {
+                document.getElementById('rc-box').innerText = 'X'
+              }
+
+              if (data.auth) {
+                document.getElementById('auth-box').innerText = 'V'
+              } else {
+                document.getElementById('auth-box').innerText = 'X'
+              }
+
+              if (data.timerUrl) {
+                document.getElementById('auth-url-field').value = data.timerUrl
+              }
+            })
+          }
+        })()
+    </script>
+    <script src="/state?jsonpCallback=updateData" type="text/javascript"></script>
+</head>
+<body>
+    <h1>Buzzer Server</h1>
+    <h2>[<span id="rc-box">?</span>] Remote Control:</h2>
+    <form action="/rc-code" method="post">
+        <label>
+            RC Code:
+            <input name="rcCode" id="rc-code-field" type="text">
+        </label>
+        <button type="submit">Save</button>
+    </form>
+    <h2>
+        [<span id="auth-box">?</span>] Authentication:
+    </h2>
+    <form action="/auth" method="post">
+        <label>
+            Timer Url:
+            <input name="url" id="auth-url-field" type="text">
+        </label>
+        <button type="submit">Authenticate</button>
+    </form>
+
+    <a href="/clock">Check clock</a>
+</body>
+</html>
