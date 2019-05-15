@@ -6,9 +6,11 @@ exports.start = (globalData) => {
     globalData.get('token'),
     globalData.get('timerUrl')
   ])
-    .then(([token, timerUrl]) => axios.post(`${timerUrl}/api/action/start`, {
+    .then(([token, timerUrl]) => axios.post(`${timerUrl}/api/action/start`, null, {
       headers: {
         'Auth-Token': token
-      }
+      },
+      validateStatus: code => 200 <= code && code < 300 || code === 400,
+      maxRedirects: 0
     }))
 }

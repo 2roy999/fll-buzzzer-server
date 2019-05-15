@@ -14,7 +14,7 @@ exports.start = (globalData, updateRcCode) => {
   app.use(bodyParser.urlencoded({ extended: false }))
 
   app.use('/auth', (req, res, next) => {
-    if (req.body.url) {
+    if (req.body.url && req.headers['host']) {
       console.log('Starting auth process...')
 
       globalData.set('timerUrl', req.body.url.replace(/\/$/, ''))
@@ -27,7 +27,7 @@ exports.start = (globalData, updateRcCode) => {
           const { protocol, host, pathname } = url.parse(response.headers.location)
 
           res.setHeader('Location', `${protocol}//${host}${pathname}?` +
-            qs.stringify({ callbackUrl: 'http://localhost:3000/auth' }))
+            qs.stringify({ callbackUrl: `http://${req.headers['host']}/auth` }))
           res.statusCode = 302
           res.end()
         })
@@ -157,5 +157,7 @@ exports.start = (globalData, updateRcCode) => {
     res.end(error.stack)
   })
 
-  http.createServer(app).listen(3000)
+  http.createServer(app).listen(3000, () => {
+    console.log('Starting Http server...')
+  })
 }

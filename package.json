@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "scp": "scp -r clock.js config-server.js index.js listener.js package.json public yarn.lock"
+  },
   "dependencies": {
     "@first-lego-league/ms-client": "^1.0.0",
     "axios": "^0.18.0",
