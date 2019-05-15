@@ -3,6 +3,7 @@ const KeyvFile = require('keyv-file')
 
 const configServer = require('./config-server')
 const rcListener = require('./listener')
+const authValidator = require('./auth-validator')
 
 const globalData = new Keyv({
   store: new KeyvFile({
@@ -14,5 +15,7 @@ const globalData = new Keyv({
   })
 })
 
-rcListener.start(globalData)
-configServer.start(globalData, rcListener.updateRcCode)
+Promise.resolve()
+  .then(() => rcListener.start(globalData))
+  .then(() => authValidator.start(globalData))
+  .then(() => configServer.start(globalData, rcListener.updateRcCode))

@@ -45,7 +45,7 @@ exports.start = (globalData) => {
     process.exit(1)
   })
 
-  globalData.get('rcCode')
+  return globalData.get('rcCode')
     .then(exports.updateRcCode)
     .catch(console.error)
 }
