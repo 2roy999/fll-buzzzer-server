@@ -143,7 +143,12 @@ exports.start = (globalData, updateRcCode) => {
 
   app.use('/', serveStatic('./public', { index: 'index.html' }))
 
-  app.use((req, res) => {
+  app.use((req, res, next) => {
+    if (url.parse(req.url).path === '/') {
+      next()
+      return
+    }
+
     res.setHeader('Location', '/')
     res.statusCode = 302
     res.end()
