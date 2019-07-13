@@ -2,7 +2,7 @@
   "name": "buzzer-server",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "scripts": {
     "scp": "scp -r clock.js config-server.js index.js listener.js auth-validator.js package.json public yarn.lock"
   },
